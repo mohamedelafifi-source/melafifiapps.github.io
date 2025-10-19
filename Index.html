@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Docs Viewer – Universal (TXT / MD)</title>
+
+  <!-- Optional Markdown support when served over http(s). Safe to keep. -->
+  <script src="https://unpkg.com/marked/marked.umd.min.js" defer></script>
+
+  <style>
+    :root { --bg:#f7f7f7; --ink:#222; --card:#fff; --muted:#64748b; --border:#e5e7eb; }
+    @media (prefers-color-scheme: dark){ :root{ --bg:#0b0b0c; --ink:#eaeaea; --card:#111; --muted:#9aa0a6; --border:#1f2937; } }
+    body{margin:0;font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    header{padding:16px;background:#0a84ff;color:#fff;text-align:center}
+    header h1{margin:6px 0 0;font-size:clamp(18px,3vw,24px)}
+    main{max-width:980px;margin:24px auto;padding:0 16px 32px}
+    .panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:0 1px 10px rgba(0,0,0,.06)}
+    label{font-weight:600}
+    select,button{padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--ink);font-size:16px}
+    #viewer{margin-top:16px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;line-height:1.6;overflow-x:auto}
+    #viewer pre{background:rgba(127,127,127,.12);padding:12px;border-radius:10px;overflow-x:auto}
+    #debug{margin-top:10px;color:var(--muted);font-size:.9rem}
+    footer{padding:24px 0 40px;text-align:center;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div>📘 Project Documentation</div>
+    <h1>Universal Docs Viewer (TXT / MD)</h1>
+  </header>
+
+  <main>
+    <section class="panel" aria-label="Controls" style="display:grid;gap:12px;max-width:560px">
+      <label for="file-select">Select a document (served mode):</label>
+      <select id="file-select">
+        <option value="">— Choose a file —</option>
+        <!-- Put your server-side files inside readmes/ next to this HTML -->
+        <option value="app-a.txt">App A (TXT)</option>
+        <option value="app-b.txt">App B (TXT)</option>
+        <option value="app-c.txt">App C (TXT)</option>
+        <!-- <option value="guide.md">Guide (MD)</option> -->
+      </select>
+
+      <div id="file-picker-row" style="display:none">
+        <label for="file-input">Or open a local file (file:// fallback):</label>
+        <div>
+          <button id="pick-btn">Choose a .txt/.md file…</button>
+          <input id="file-input" type="file" accept=".txt,.md,text/plain,text/markdown" style="display:none">
+        </div>
+      </div>
+
+      <div id="debug" aria-live="polite"></div>
+    </section>
+
+    <section id="viewer" class="panel" aria-live="polite">
+      <h2>Welcome!</h2>
+      <p>Select a file above. When hosted (http/https), files are loaded from <code>readmes/</code>. When opened directly (file://), use the button to pick a local file.</p>
+    </section>
+  </main>
+
+  <footer>© 2025</footer>
+
+  <script>
+    const READMES_DIR = 'readmes/'; // relative to this HTML file
+    const dbg = (m) => { console.log('[DEBUG]', m); document.getElementById('debug').textContent = String(m); };
+    const escapeHTML = (s) => s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+    const isMD = (n) => n.toLowerCase().endsWith('.md');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const select   = document.getElementById('file-select');
+      const viewer   = document.getElementById('viewer');
+      const picker   = document.getElementById('file-picker-row');
+      const pickBtn  = document.getElementById('pick-btn');
+      const fileIn   = document.getElementById('file-input');
+
+      const servedMode = location.protocol === 'http:' || location.protocol === 'https:';
+      if (!servedMode) {
+        // file:// fallback UX
+        picker.style.display = 'grid';
+        dbg('Opened via file:// — use the Choose File button, or run a local server.');
+      } else {
+        dbg('Served mode — dropdown will load from readmes/');
+      }
+
+      async function renderText(name, text) {
+        if (isMD(name) && window.marked?.parse) {
+          viewer.innerHTML = window.marked.parse(text);
+          dbg('Rendered Markdown');
+        } else {
+          viewer.innerHTML = `<pre>${escapeHTML(text)}</pre>`;
+          dbg('Rendered plain text');
+        }
+      }
+
+      async function loadServed(name) {
+        if (!name) { viewer.innerHTML = '<h2>Welcome!</h2>'; return; }
+        const path = READMES_DIR + name;
+        viewer.innerHTML = '<h3>Loading…</h3>';
+        dbg(`Fetching: ${new URL(path, document.baseURI).href}`);
+        try {
+          const res = await fetch(path, { cache: 'no-cache' });
+          if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+          const text = await res.text();
+          renderText(name, text);
+        } catch (e) {
+          console.error(e);
+          viewer.innerHTML = `<h3 style="color:crimson">Error loading file</h3>
+            <p><code>${escapeHTML(path)}</code></p><p>${escapeHTML(e.message)}</p>`;
+          dbg('Load failed');
+        }
+      }
+
+      // Served-mode dropdown
+      select.addEventListener('change', () => {
+        if (servedMode) loadServed(select.value);
+      });
+
+      // file:// picker fallback
+      pickBtn.addEventListener('click', () => fileIn.click());
+      fileIn.addEventListener('change', async () => {
+        const f = fileIn.files?.[0];
+        if (!f) return;
+        const text = await f.text();
+        renderText(f.name, text);
+        select.value = ''; // clear dropdown selection
+      });
+
+      // Optional: autoload via ?file=app-a.txt (served only)
+      const params = new URLSearchParams(location.search);
+      const initial = params.get('file');
+      if (servedMode && initial) { select.value = initial; loadServed(initial); }
+    });
+  </script>
+</body>
+</html>

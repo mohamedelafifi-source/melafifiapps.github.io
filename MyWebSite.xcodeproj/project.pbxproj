@@ -6,11 +6,26 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXFileReference section */
+		A2B7176E2EA5437900AF521F /* Index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Index.html; sourceTree = "<group>"; };
+		A2B7176F2EA543DF00AF521F /* app-a.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "app-a.md"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
 /* Begin PBXGroup section */
 		A2B717672EA5424E00AF521F = {
 			isa = PBXGroup;
 			children = (
+				A2B7176E2EA5437900AF521F /* Index.html */,
+				A2B717702EA543DF00AF521F /* readmes  */,
 			);
+			sourceTree = "<group>";
+		};
+		A2B717702EA543DF00AF521F /* readmes  */ = {
+			isa = PBXGroup;
+			children = (
+				A2B7176F2EA543DF00AF521F /* app-a.md */,
+			);
+			path = "readmes ";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
