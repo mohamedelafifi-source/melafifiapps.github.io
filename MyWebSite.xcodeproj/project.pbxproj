@@ -9,16 +9,14 @@
 /* Begin PBXFileReference section */
 		A2B7176E2EA5437900AF521F /* Index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Index.html; sourceTree = "<group>"; };
 		A2B7176F2EA543DF00AF521F /* app-a.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "app-a.md"; sourceTree = "<group>"; };
-		A2B717722EA56BAF00AF521F /* Untitled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untitled.swift; sourceTree = "<group>"; };
-		A2B717732EA56BE600AF521F /* .nojekyll.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = .nojekyll.xib; sourceTree = "<group>"; };
+		A2B717742EA56C8C00AF521F /* .nojekyll */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = .nojekyll; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		A2B717672EA5424E00AF521F = {
 			isa = PBXGroup;
 			children = (
-				A2B717732EA56BE600AF521F /* .nojekyll.xib */,
-				A2B717722EA56BAF00AF521F /* Untitled.swift */,
+				A2B717742EA56C8C00AF521F /* .nojekyll */,
 				A2B7176E2EA5437900AF521F /* Index.html */,
 				A2B717702EA543DF00AF521F /* readmes  */,
 			);
