@@ -5,6 +5,27 @@
 //  Created by Mohamed El Afifi on 10/21/25.
 //
 
+# macOS cruft
 .DS_Store
+
+# Xcode user data
 xcuserdata/
+*.xcuserstate
+*.xcworkspace/
 DerivedData/
+
+# Build / archive output
+build/
+*.o
+*.dSYM/
+*.ipa
+*.app
+
+# SwiftPM / Package stuff (if ever added)
+.swiftpm/
+Packages/
+Package.resolved
+
+# Temporary or cache files
+*.tmp
+*.log
