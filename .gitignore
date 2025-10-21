@@ -1,0 +1,10 @@
+//
+//  .gitignore
+//  melafifiappsTarget
+//
+//  Created by Mohamed El Afifi on 10/21/25.
+//
+
+.DS_Store
+xcuserdata/
+DerivedData/
