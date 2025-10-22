@@ -9,7 +9,7 @@ I will hence forward call the application : FTA
   
 There are four main menu entries . I will explain them through the normal process of creating a family tree . Not the way the menus might appear   
   
-1- **Data input menu :**  
+1- **Data Entry menu :**  
 You can add data to the FTA in two ways   
 The first is in bulk form . This is the easier way to create a tree. You create a text file , copy it to the clipboard (pasteboard) and paste it in the text editor that will be shown . When selecting  Parse , the FTA will check the data and parse it in a family tree. This will be explained later in more details   
 The second is by keying in individual family members . This is much slower. This feature can also be used to edit the family tree you presently have in the FTA. Whether this was fed to the FTA through bulk input or by loading a tree file   
@@ -31,8 +31,10 @@ NAME:Grandchild; PARENTS: Son1,Spouse1; SPOUSES:; SIBLINGS:;CHILDREN
     - [ ] Any member with no entry line  in the dictionary will not be displayed  
     - [ ] Once you create the file , copy it to the clipboard and parse it in the Text Input field. Press Parse. You will get a confirmation if the FTA accepted your data   
     - [ ] Now you can display the family and store it   
+    - [ ]   
+    Important Note : You can use the option of Clear All data to clear the existing family tree data from the app. It will NOT delete any file only the data in the FTA  
   
-2- **Display the family tree **  
+2- **Display the family tree : The View menu**  
 This is where you can display the tree and scroll through it   
 The family dictionary can be added to the FTA from two sources . The first is though the Data input menu as previously explained. The second is from the file handling menu where you can load and append previously entered data . This will be explained later  
   
@@ -59,7 +61,7 @@ The tree file allows you to merge family trees together to create a bigger on . 
     - [ ] Display the family tree . It should show you the merged data from FT1 and FT2 . You can then save it as a tree file calling it FT3 , or whatever name you prefer   
 This is the way to merge and build larger family trees  
   
-**4- Image handling :**  
+**4- Image handling : The Photo menu**  
 This is an added option that just allows the display of family members photos   
 It has no effect whatsoever on the structure and display of the family trees  
 *++How to use it :++*  
