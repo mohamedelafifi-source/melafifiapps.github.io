@@ -1,82 +1,70 @@
 <!doctype html>
 <html lang="en">
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Reader (md + txt)</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MElAfifi Document Retrieval</title>
 
-<!-- Marked.js for Markdown rendering -->
+<!-- Markdown renderer -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <style>
-  body { font: 16px/1.5 -apple-system, system-ui, sans-serif; margin: 0; }
-  header { padding: 12px 16px; border-bottom: 1px solid #eee; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-  main { max-width: 900px; margin: 24px auto; padding: 0 16px 48px; }
-  select, button, input { font: inherit; }
-  #content { padding: 16px; border: 1px solid #eee; border-radius: 10px; background: #fafafa; overflow-x: auto; }
-  .muted { color: #666; }
-  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  :root { --gap: 14px; --maxw: 900px; }
+  html, body { margin:0; font:16px/1.55 -apple-system, system-ui, Segoe UI, Roboto, sans-serif; }
+  header { padding: 18px 16px; border-bottom: 1px solid #eee; }
+  h1 { font-size: 20px; margin: 0 0 10px 0; }
+  .controls { display:flex; gap: var(--gap); align-items:center; flex-wrap:wrap; }
+  select, button { font: inherit; padding: 8px 10px; }
+  main { max-width: var(--maxw); margin: 22px auto 56px; padding: 0 16px; }
+  #status { color:#666; margin-bottom: 10px; }
+  #content { border:1px solid #eee; border-radius:12px; padding:16px; background:#fafafa; overflow-x:auto; }
+  pre { white-space: pre-wrap; word-wrap: break-word; }
 </style>
 
 <body>
   <header>
-    <strong>Open:</strong>
-    <select id="fileSelect"></select>
-    <button id="openBtn">Load</button>
-    <span class="muted">Tip: also try <code>?file=my-notes.md</code> in the URL</span>
+    <h1>MElAfifi Document Retrieval</h1>
+    <div class="controls">
+      <label for="fileSelect"><strong>Open:</strong></label>
+      <select id="fileSelect"></select>
+      <button id="openBtn">Load</button>
+    </div>
   </header>
 
   <main>
-    <div id="status" class="muted">Choose a file to load…</div>
+    <div id="status">Choose a file and click Load…</div>
     <div id="content"></div>
   </main>
 
 <script>
-/**
- * 1) List your files here (same folder as index.html)
- *    Examples: "readme.md", "notes.txt", "guide.md"
- */
+/* ====== Hard-coded files (same folder as index.html) ====== */
 const files = [
-"MyFamilyTree.md"
+  "MyFamilyTree.md",
   "readme1.md",
   "notes.txt"
 ];
 
-/**
- * Utilities
- */
-const q = new URLSearchParams(location.search);
-const fileParam = q.get("file");
-
+/* ====== Elements ====== */
 const fileSelect = document.getElementById("fileSelect");
-const openBtn = document.getElementById("openBtn");
-const statusEl = document.getElementById("status");
-const contentEl = document.getElementById("content");
+const openBtn    = document.getElementById("openBtn");
+const statusEl   = document.getElementById("status");
+const contentEl  = document.getElementById("content");
 
-// Populate dropdown
-files.forEach(f => {
+/* ====== Populate dropdown ====== */
+files.forEach(name => {
   const opt = document.createElement("option");
-  opt.value = f;
-  opt.textContent = f;
+  opt.value = name;
+  opt.textContent = name;
   fileSelect.appendChild(opt);
 });
 
-// If URL has ?file=..., select it; otherwise select the first
-if (fileParam && files.includes(fileParam)) {
-  fileSelect.value = fileParam;
-} else if (files.length) {
-  fileSelect.value = files[0];
-}
-
-/**
- * Fetch and render a file from the same directory as index.html
- */
+/* ====== Loader ====== */
 async function loadFile(filename) {
   statusEl.textContent = `Loading “${filename}”…`;
   contentEl.innerHTML = "";
 
-  // Basic safety: prevent directory traversal
-  if (filename.includes("..") || filename.startsWith("/")) {
-    statusEl.textContent = "Blocked invalid path.";
+  // basic safety
+  if (!filename || filename.includes("..") || filename.startsWith("/")) {
+    statusEl.textContent = "Invalid filename.";
     return;
   }
 
@@ -85,34 +73,33 @@ async function loadFile(filename) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
 
-    // Render based on extension
     if (filename.toLowerCase().endsWith(".md")) {
-      // Markdown → HTML
       contentEl.innerHTML = marked.parse(text);
     } else {
-      // Plain text → wrap in <pre>
       const pre = document.createElement("pre");
       pre.textContent = text;
       contentEl.replaceChildren(pre);
     }
 
     statusEl.textContent = `Loaded “${filename}”.`;
-    // Update query so you can bookmark/share the current file
-    const url = new URL(location.href);
-    url.searchParams.set("file", filename);
-    history.replaceState(null, "", url);
   } catch (err) {
     statusEl.textContent = `Error loading “${filename}”: ${err.message}`;
   }
 }
 
-// Wire up UI
-openBtn.addEventListener("click", () => loadFile(fileSelect.value));
-fileSelect.addEventListener("change", () => loadFile(fileSelect.value));
+/* ====== Events ====== */
+openBtn.addEventListener("click", () => {
+  const f = fileSelect.value;
+  if (f) loadFile(f);
+});
 
-// Auto-load on first visit if we have a selection
-if (fileSelect.value) loadFile(fileSelect.value);
+/* ====== Auto-select & load first file ====== */
+if (files.length) {
+  fileSelect.value = files[0];
+  loadFile(files[0]);
+} else {
+  statusEl.textContent = "No files configured.";
+}
 </script>
 </body>
 </html>
-
