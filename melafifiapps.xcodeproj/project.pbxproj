@@ -13,7 +13,7 @@
 		A2B717792EA6A7BA00AF521F /* notes.txt */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = notes.txt; sourceTree = "<group>"; };
 		A2F9F4012EA7F72F00BC1125 /* melafifiappsTarget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = melafifiappsTarget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2F9F4102EA7FB5100BC1125 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = .gitignore; sourceTree = "<group>"; };
-		A2F9F4112EA7FC8400BC1125 /* Untitled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untitled.swift; sourceTree = "<group>"; };
+		A2F9F4112EA7FC8400BC1125 /* MyFamilyTree.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = MyFamilyTree.md; sourceTree = "<group>"; };
 		A2F9F4122EA7FCDC00BC1125 /* InfoAboutApp.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = InfoAboutApp.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -54,7 +54,7 @@
 			children = (
 				A2F9F4122EA7FCDC00BC1125 /* InfoAboutApp.md */,
 				A2F9F4102EA7FB5100BC1125 /* .gitignore */,
-				A2F9F4112EA7FC8400BC1125 /* Untitled.swift */,
+				A2F9F4112EA7FC8400BC1125 /* MyFamilyTree.md */,
 				A2B717742EA56C8C00AF521F /* .nojekyll */,
 				A2B717702EA543DF00AF521F /* readmes  */,
 				A2B717772EA6A53000AF521F /* index.html */,
