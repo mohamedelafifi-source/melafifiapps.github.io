@@ -1,4 +1,3 @@
-
 **Family Tree Application running on Apple iOS. **
   
 **Introduction**
@@ -509,3 +508,4 @@ Once you have a family tree loaded in the FTA app , you can select the Browse Fa
   
   
   
+
